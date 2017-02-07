@@ -5,15 +5,14 @@ class VideoConverter():
   __FPS = None
   __SIZE = None
   __EXTENSION = None
+  __DEVICES = {'iphone': '161x283', 'macbook': '400x300', 'imac': '1000x800'}
 
   def __init__(self,
                encoder="ffmpeg",
-               fps=20,
-               size="600x338"):
+               fps=30):
 
     self.set_encoder(encoder)
     self.set_fps(fps)
-    self.set_size(size)
 
   def input_file_name(self, video):
     """
@@ -31,7 +30,17 @@ class VideoConverter():
     if name[1] == 'gif':
       self.set_extension('gif')
     else:
+      #TODO: Add other formats, if required.
       pass
+
+  def output_format(self, format):
+    for devices in self.get_devices():
+      if devices == format:
+        self.set_size(self.get_device_size(format))
+      else:
+        #TODO: Handle error or return a default size.
+        pass
+
 
   def generate_gif(self):
     os.system(
@@ -92,3 +101,16 @@ class VideoConverter():
     :return mixed:
     """
     return VideoConverter.__ENCODER
+
+  def get_devices(self):
+    """
+    :return dict:
+    """
+    return VideoConverter.__DEVICES
+
+  def get_device_size(self, device):
+    """
+    :param device:
+    :return mixed:
+    """
+    return VideoConverter.__DEVICES[device]
